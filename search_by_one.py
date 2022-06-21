@@ -4,11 +4,8 @@ from config import host_name, user, password, db_name, port_id
 print('Добавление новых строк в таблице')
 district = input('Введите район: (fl_317) ')
 fls = input('Введите номер ФЛС: ')
-name = "'" + input('Введите ФИО должника: ') + "'"
-address = "'" + input('Введите адрес: ') + "'"
-tel = "'" + input('Введите номер телефона должника: ') + "'"
 
-command_add = 'INSERT INTO {0} (fls, name, address, tel) VALUES ({1}, {2}, {3}, {4});'.format(district, fls, name, address, tel)
+command_add = 'SELECT * FROM {0} WHERE fls = {1};'.format(district, fls)
 # Потом добавить возможность выборочно добавлять информацию
 
 try:
@@ -27,7 +24,7 @@ try:
         cursor.execute(
             command_add
         )
-        print('[INFO] Values are added successfully')    
+        print(cursor.fetchall())    
     
     connection.close()
 except Exception as _ex:
