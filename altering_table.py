@@ -1,38 +1,6 @@
-import psycopg2
-from config import host_name, user, password, db_name, port_id
+from command_sender import *
 
-
-def sendData(dist, a, b):
-    try:
-        connection = psycopg2.connect(
-            host=host_name,
-            user=user,
-            password=password,
-            database=db_name,
-            port=port_id
-        )
-            
-        connection.autocommit = True
-        
-        # change values
-        with connection.cursor() as cursor:
-            cursor.execute('''
-            UPDATE {0}
-            SET {1}
-            WHERE {2};
-            '''.format(dist, a, b)
-            )
-            print('[INFO] Values are changed successfully')    
-        
-        connection.close()
-    except Exception as _ex:
-        print('[INFO] Error while working with PostgreSQL', _ex)
-    
-    finally:
-        if connection:
-            # cursor.close()
-            connection.close()
-            print('[INFO] PostgreSQL connection closed') 
+ 
 
 def decideSearch():
     print('''Как будет осуществляться поиск должника?
@@ -49,11 +17,19 @@ def insertData(district1, s1, fls1='0', name1='0', tel1='0', address1='0'):
     for i in range(len(sp)):
         if list1[i] != '0':
             if s1 == True:
-                sendData(district1, sp[i] + '=' + list1[i],'fls=' + fls1)
+                command_add = '''
+                UPDATE {0}
+                SET {1}
+                WHERE {2};
+                '''.format(district1, sp[i] + '=' + list1[i],'fls=' + fls1)                
+                sendData(command_add)
             elif s1 == False:
-                sendData(district1, sp[i] + '=' + list1[i],'"name" = ' + "'" + name1 + "'")
-                #sendData(district1, sp[i] + '=' + list1[i],'name=' + name1)
-                
+                command_add = '''
+                UPDATE {0}
+                SET {1}
+                WHERE {2};
+                '''.format(district1, sp[i] + '=' + list1[i],'"name" = ' + "'" + name1 + "'")
+                sendData(command_add)
 
 def choiceMaker():
     c = input('Введите нужные цифры/цифру в порядке возрастания через пробел: ')
