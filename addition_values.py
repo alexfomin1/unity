@@ -2,7 +2,8 @@ import psycopg2
 from config import host_name, user, password, db_name, port_id
 
 print('Добавление новых строк в таблице')
-district = input('Введите район: (fl_317) ')
+district = input('Введите номер района: (317) ')
+district = 'fl_' + district
 fls = input('Введите номер ФЛС: ')
 name = "'" + input('Введите ФИО должника: ') + "'"
 address = "'" + input('Введите адрес: ') + "'"
