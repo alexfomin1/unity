@@ -3,6 +3,9 @@ from command_sender_one import *
 from command_sender_all import *
 from districts_list import fl_317
 from openpyxl import workbook, load_workbook
+from report_docs import *
+
+
 
 start_y = 4
 
@@ -110,4 +113,5 @@ for x in districts:
  
     start_y += 1
 
-wb.save('report.xlsx') 
+wb.save('report.xlsx')
+creation_report_docx()
