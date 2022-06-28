@@ -2,102 +2,112 @@ from command_sender import *
 from command_sender_one import *
 from command_sender_all import *
 from districts_list import fl_317
-from xlutils.copy import copy
-from xlrd import open_workbook
+from openpyxl import workbook, load_workbook
 
 start_y = 4
 
-districts = ['fl_317_']
-w1 = open_workbook('СИР ГБУ свыше 5 мес..xlsx', on_demand=True)
-w = copy(w1)
+data = {}
+
+districts = ['fl_317']
+# , 'fl_311', 'fl_312', 'fl_313', 'fl_314', 'fl_315', 'fl_316', 'fl_318', 'fl_319', 'fl_320', 'fl_321', 'fl_322', 'fl_323'
+wb = load_workbook('СИР ГБУ свыше 5 мес..xlsx')
+ws = wb.active
 for x in districts:
+    data[x] = {}
     start_x = 2
     start_y += 1
     command_add = ('''
     SELECT COUNT(fls)
     FROM {}
-    ''').format(x+'c')
-    a = sendDataOne(command_add)[0]
+    ''').format(x+'_c')
+    data[x]['fls'] = str(sendDataOne(command_add)[0])
     command_add = ('''
     SELECT SUM(summa)
     FROM {}
-    ''').format(x+'c')
-    b = sendDataOne(command_add)[0]
+    ''').format(x+'_c')
+    data[x]['summa'] = str(sendDataOne(command_add)[0])
     
     command_add = ('''
     SELECT COUNT(DISTINCT fls)
     FROM {}
-    ''').format(x+'sud')
-    c = sendDataOne(command_add)[0]
+    ''').format(x+'_sud')
+    data[x]['fls_sud'] = str(sendDataOne(command_add)[0])
     command_add = ('''
     SELECT SUM(summa_sud)
     FROM {}
-    ''').format(x+'sud')
-    d = sendDataOne(command_add)[0]
+    ''').format(x+'_sud')
+    data[x]['summa_sud'] = str(sendDataOne(command_add)[0])
     
     command_add = ('''
     SELECT COUNT(DISTINCT fls)
     FROM {}
-    ''').format(x+'ssp')
-    e = sendDataOne(command_add)[0]
+    ''').format(x+'_ssp')
+    data[x]['fls_ssp'] = str(sendDataOne(command_add)[0])
     command_add = ('''
-    SELECT SUM(summa_ssp)
+    SELECT SUM(remains_ssp)
     FROM {}
-    ''').format(x+'ssp')
-    f = sendDataOne(command_add)[0]
+    ''').format(x+'_ssp')
+    data[x]['remains_ssp'] = str(sendDataOne(command_add)[0])
 
     command_add = ('''
     SELECT COUNT(DISTINCT fls)
     FROM {}
-    ''').format(x+'bank')
-    g = sendDataOne(command_add)[0]
+    ''').format(x+'_bank')
+    data[x]['fls_bank'] = str(sendDataOne(command_add)[0])
     command_add = ('''
-    SELECT SUM(summa_bank)
+    SELECT SUM(remains_bank)
     FROM {}
-    ''').format(x+'bank')
-    h = sendDataOne(command_add)[0]
+    ''').format(x+'_bank')
+    data[x]['remains_bank'] = str(sendDataOne(command_add)[0])
     
     command_add = ('''
     SELECT COUNT(DISTINCT fls)
     FROM {}
-    ''').format(x+'restruct')
-    i = sendDataOne(command_add)[0]
+    ''').format(x+'_restruct')
+    data[x]['fls_restruct'] = str(sendDataOne(command_add)[0])
     command_add = ('''
-    SELECT SUM(summa_restruct)
+    SELECT SUM(remains_restruct)
     FROM {}
-    ''').format(x+'restruct')
-    j = sendDataOne(command_add)[0]
+    ''').format(x+'_restruct')
+    data[x]['remains_restruct'] = str(sendDataOne(command_add)[0])
     
     command_add = ('''
     SELECT COUNT(DISTINCT fls)
     FROM {}
-    ''').format(x+'impossible')
-    k = sendDataOne(command_add)[0]
+    ''').format(x+'_impossible')
+    data[x]['fls_impossible'] = str(sendDataOne(command_add)[0])
     command_add = ('''
     SELECT SUM(summa_impossible)
     FROM {}
-    ''').format(x+'impossible')
-    l = sendDataOne(command_add)[0]
+    ''').format(x+'_impossible')
+    data[x]['summa_impossible'] = str(sendDataOne(command_add)[0])
     
     command_add = ('''
     SELECT COUNT(DISTINCT fls)
     FROM {}
-    ''').format(x+'no')
-    m = sendDataOne(command_add)[0]
+    ''').format(x+'_no')
+    data[x]['fls_no'] = str(sendDataOne(command_add)[0])
     command_add = ('''
     SELECT SUM(summa_more5)
     FROM {}
-    ''').format(x+'no')
-    n = sendDataOne(command_add)[0]
+    ''').format(x+'_no')
+    data[x]['summa_no'] = str(sendDataOne(command_add)[0])
     
-    list_par = []
-    for y1 in (a,b,c,d,e,f,g,h,i,k,l,m,n):
-        if y1 == None:
-            y1 = 0
-            list_par.append(y1)
-        else:
-            list_par.append(y1)
-    for abc in range(len(list_par)):
-        w.get_sheet(0).write(start_y,start_x, int(list_par[abc]))
-        start_x += 1
-w.save('report.xls') 
+    ws['C'+str(start_y)].value = data[x]['fls']
+    ws['D'+str(start_y)].value = data[x]['summa']
+    ws['E'+str(start_y)].value = data[x]['fls_sud']
+    ws['F'+str(start_y)].value = data[x]['summa_sud']
+    ws['G'+str(start_y)].value = data[x]['fls_ssp']
+    ws['H'+str(start_y)].value = data[x]['remains_ssp']
+    ws['I'+str(start_y)].value = data[x]['fls_bank']
+    ws['K'+str(start_y)].value = data[x]['remains_bank']
+    ws['L'+str(start_y)].value = data[x]['fls_restruct']
+    ws['M'+str(start_y)].value = data[x]['remains_restruct']
+    ws['N'+str(start_y)].value = data[x]['fls_impossible']
+    ws['R'+str(start_y)].value = data[x]['summa_impossible']
+    ws['T'+str(start_y)].value = data[x]['fls_no']
+    ws['U'+str(start_y)].value = data[x]['summa_no']
+ 
+    start_y += 1
+
+wb.save('report.xlsx') 
