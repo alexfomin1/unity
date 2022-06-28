@@ -48,13 +48,15 @@ for j in range(len(l_req)):
     l_req[j] = ''
     l_req[j] = val_str(j, 0+5)
 
-'''
+
 
 for i in range(164):
     for j in range(len(l_req)):
         l_req[j] = ''
         l_req[j] = val_str(j, i+5)
-    import_col(district2, l_req[0], "'"+l_req[1]+"'", "'"+l_req[2]+"'", l_req[3], l_req[4], l_req[5])
+'''
+print(sheet.cell(10, 6))
+#    import_col(district2, l_req[0], "'"+l_req[1]+"'", "'"+l_req[2]+"'", l_req[3], l_req[4], l_req[5])
 
 # import_col(district2, l_req[0], "'"+l_req[1]+"'", "'"+l_req[2]+"'", l_req[3], l_req[4], l_req[5], l_req[6])
 

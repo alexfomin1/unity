@@ -1,4 +1,5 @@
 from command_sender import *
+from time_tracker import *
 
 print('Добавление новых строк в таблице')
 district = input('Введите номер района: (317) ')
@@ -13,6 +14,6 @@ command_add = 'INSERT INTO {0} (fls, name, address, tel) VALUES ({1}, {2}, {3}, 
 
 sendData(command_add)
 
-
+time_now(district, fls)
 
 
