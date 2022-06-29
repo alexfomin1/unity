@@ -1,9 +1,9 @@
-from report_tables import *
+from getting_report_data import *
 from docx import Document
 from docx.shared import Pt, RGBColor, Mm, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-
+data = get_report_data()
 def creation_report_docx():
     #открытие документа
     document = Document()
