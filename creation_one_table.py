@@ -15,12 +15,13 @@ try:
     
     with connection.cursor() as cursor:
         cursor.execute(
-            '''CREATE TABLE fl_317_no (
+            '''CREATE TABLE fl_317_journal (
             fls BIGINT NOT NULL PRIMARY KEY,
-            period_less5 INTEGER,
-            summa_less5 INTEGER,
-            period_more5 INTEGER,
-            summa_more5 INTEGER
+            message_journal VARCHAR(255),
+            summa_journal INTEGER,
+            date_journal DATE,
+            date_input_jornal DATE,
+            appointment_journal VARCHAR(255)
             );'''
         )
         print('[INFO] Table created successfully')      
